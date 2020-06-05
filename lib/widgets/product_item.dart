@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpleshopflutter/providers/cart.dart';
 import 'package:simpleshopflutter/providers/product.dart';
 import 'package:simpleshopflutter/screens/product_detail_screen.dart';
 
@@ -14,6 +15,8 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     print("product_item BUILD");
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.black,
@@ -52,7 +55,9 @@ class ProductItem extends StatelessWidget {
             trailing: IconButton(
               icon: Icon(Icons.shopping_cart),
               color: Theme.of(context).accentColor,
-              onPressed: () {},
+              onPressed: () {
+                cart.addItem(product.id, product.price, product.title);
+              },
             ),
             title: Text(
               product.title,

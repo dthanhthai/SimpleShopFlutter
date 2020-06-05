@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpleshopflutter/providers/cart.dart';
 import 'package:simpleshopflutter/providers/products.dart';
+import 'package:simpleshopflutter/screens/cart_screen.dart';
+import 'package:simpleshopflutter/widgets/badge.dart';
 import 'package:simpleshopflutter/widgets/product_grid.dart';
 
 enum FilterOptions { Favorites, All }
@@ -42,6 +45,20 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
               ),
             ],
           ),
+          Consumer<Cart>(
+            builder: (_, cart, argumentChild) {
+              return Badge(
+                child: argumentChild,
+                value: cart.itemCount.toString(),
+              );
+            },
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {
+                Navigator.of(context).pushNamed(CartScreen.routeName);
+              },
+            ),
+          )
         ],
       ),
       body: ProductGrid(_showFavoritesOnly),
