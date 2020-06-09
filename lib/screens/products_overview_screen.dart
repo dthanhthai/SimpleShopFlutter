@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:simpleshopflutter/providers/cart.dart';
 import 'package:simpleshopflutter/providers/products.dart';
 import 'package:simpleshopflutter/screens/cart_screen.dart';
+import 'package:simpleshopflutter/widgets/app_drawer.dart';
 import 'package:simpleshopflutter/widgets/badge.dart';
 import 'package:simpleshopflutter/widgets/product_grid.dart';
 
@@ -61,6 +62,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
           )
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductGrid(_showFavoritesOnly),
     );
   }

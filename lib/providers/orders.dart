@@ -15,14 +15,14 @@ class OrderItem {
 }
 
 class Orders with ChangeNotifier {
-  List<OrderItem> _order = [];
+  List<OrderItem> _orders = [];
 
-  List<OrderItem> get order {
-    return [..._order];
+  List<OrderItem> get orders {
+    return [..._orders];
   }
 
   void addOrder(List<CartItem> cartProducts, double total) {
-    _order.insert(
+    _orders.insert(
         0,
         OrderItem(
             id: DateTime.now().toString(),
