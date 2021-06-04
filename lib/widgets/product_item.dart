@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simpleshopflutter/providers/auth.dart';
 import 'package:simpleshopflutter/providers/cart.dart';
 import 'package:simpleshopflutter/providers/product.dart';
 import 'package:simpleshopflutter/screens/product_detail_screen.dart';
@@ -16,6 +17,7 @@ class ProductItem extends StatelessWidget {
     print("product_item BUILD");
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
 
     return Container(
       decoration: BoxDecoration(
@@ -33,9 +35,13 @@ class ProductItem extends StatelessWidget {
                 arguments: product.id,
               );
             },
-            child: Image.network(
-              product.imageUrl,
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: product.id!,
+              child: FadeInImage(
+                placeholder: AssetImage('assets/images/product-placeholder.png'),
+                image: NetworkImage(product.imageUrl),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           footer: GridTileBar(
@@ -47,7 +53,10 @@ class ProductItem extends StatelessWidget {
                     : Icons.favorite_border),
                 color: Theme.of(context).accentColor,
                 onPressed: () {
-                  productConsumer.toggleFavoriteStatus();
+                  productConsumer.toggleFavoriteStatus(
+                    auth.token!,
+                    auth.userId!,
+                  );
                 },
               ),
               child: Text('Never Change!'),
@@ -56,7 +65,7 @@ class ProductItem extends StatelessWidget {
               icon: Icon(Icons.shopping_cart),
               color: Theme.of(context).accentColor,
               onPressed: () {
-                cart.addItem(product.id, product.price, product.title);
+                cart.addItem(product.id!, product.price, product.title);
                 Scaffold.of(context).hideCurrentSnackBar();
                 Scaffold.of(context).showSnackBar(
                   SnackBar(
@@ -65,7 +74,7 @@ class ProductItem extends StatelessWidget {
                     action: SnackBarAction(
                       label: 'UNDO',
                       onPressed: () {
-                        cart.remoteSingleItem(product.id);
+                        cart.remoteSingleItem(product.id!);
                       },
                     ),
                   ),
